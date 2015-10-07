@@ -10,11 +10,6 @@ public class GameCore
         {
             return (XP / 10) + 1;  // If called, will return total xp divided by 10 + 1, as the minimum level is 1
         }
-
-        set
-        {
-            XP = (value + 1) * 10;       // Works out XP based off of the Level
-        }
     }
     //public int XP { get; set; }                                                     // Total XP
     //public string BoostActive { get; set; }                         // Shows if experience boost is active
