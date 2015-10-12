@@ -1,0 +1,10 @@
+diff a/CanyonRun/Assets/Scripts/GameCore.cs b/CanyonRun/Assets/Scripts/GameCore.cs	(rejected hunks)
+@@ -49,7 +49,7 @@
+         CanFire = false;                        //When fired, cannot fire for a time
+     }
+ 
+-    public void DecreaseFireCooldownRemaining(int timeElapsed)
++   /* public void DecreaseFireCooldownRemaining(int timeElapsed)
+     {
+         for (int i; i <= 3; ++i)
+         {
