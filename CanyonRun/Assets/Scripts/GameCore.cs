@@ -61,6 +61,15 @@ public class GameCore
     }
  
     //EnableBoost
+    public void EnableBoost (float activeTime)
+    {
+        if (BoostActive = true)
+        {
+            activeTime = 10;
+        }
+
+        BoostActive = true;
+    }
 
     public void DecreaseBoostTimeRemaining (float timeElapsed)
     {
