@@ -49,9 +49,9 @@ public class GameCore
         CanFire = false;                        //When fired, cannot fire for a time
     }
 
-   /* public void DecreaseFireCooldownRemaining(int timeElapsed)
+    public void DecreaseFireCooldownRemaining(float timeElapsed)
     {
-        for (timeElapsed; timeElapsed <= 3; ++timeElapsed)
+        for (float i = timeElapsed; i <= 3; ++timeElapsed, ++i)
         {
             FireOnCooldown = true;
             FireCooldownRemaining = timeElapsed;
@@ -60,7 +60,7 @@ public class GameCore
         FireOnCooldown = false;
     }
  
-    */
+    //EnableBoost
 
     public void DecreaseBoostTimeRemaining (float timeElapsed)
     {
@@ -73,7 +73,6 @@ public class GameCore
 
 /*
         5. Enable Boost
-        DecreaseBoostTimeRemaining
 
 
  
