@@ -20,7 +20,7 @@ public class UI_LaunchButton : MonoBehaviour {
 	
 	
 	public void LaunchButtonClicked() {
-        PlayerPref.DeleteAll();                             //Player starts at level 1
+        PlayerPrefs.DeleteAll();                             //Player starts at level 1
 		Application.LoadLevel("Level1");
 	}
 	
