@@ -3,72 +3,74 @@
 public class GameCore
 {
 
-    public int Level{ get; set; }                                           // Player level
-    public int XP { get; set; }                                                     // Total XP
-    public bool BoostActive { get; set; }                         // Shows if experience boost is active
-    public float BoostTimeRemaining { get; set; }                   // Shows time remaining for boost
-    public bool FireOnCooldown { get; set; }                      // Shows if weapons are on cooldown
-    public float FireCooldownRemaining { get; set; }                // Shows time remaing until weapon can fire again
-    public bool CanFire { get; set; }                             // Shows if weapons can currently be fired
+    public int Level{ get; set; }                                               // Player level
+    public int XP { get; set; }                                                 // Total XP
+    public bool BoostActive { get; set; }                                       // Shows if experience boost is active
+    public float BoostTimeRemaining { get; set; }                               // Shows time remaining for boost
+    public bool FireOnCooldown { get; set; }                                    // Shows if weapons are on cooldown
+    public float FireCooldownRemaining { get; set; }                            // Shows time remaing until weapon can fire again
+    public bool CanFire { get; set; }                                           // Shows if weapons can currently be fired
 
-    public float Lerp(float MinV, float MaxV, float Progress)         // From value (MinV), To value (MaxV) and percentage Difference value (Progress)
+    public float Lerp(float minV, float maxV, float progress)                   // From value (MinV), To value (MaxV) and percentage Difference value (Progress)
     {
-        return Progress * (MaxV - MinV) + MinV;                        // Progress (0-1) x (Maximum value - Minimum value), where 1 = 100%
+        return progress * (maxV - minV) + minV;                                 // Progress (0-1) x (Maximum value - Minimum value), where 1 = 100%
     }
 
-    int XPRequiredToNextLevel(int playerLevel)    //XP to next level                  
+    public int XPRequiredToNextLevel(int playerLevel)                                  //XP to next level                  
     {
         if (playerLevel % 2 ==0)
         {
-            return playerLevel * 10;            //Even levels
+            return playerLevel * 11;                                            //Even levels
         }
         else
         {
-            return playerLevel * 11;            //Odd levels
+            return playerLevel * 10;                                            //Odd levels
         }
     }
 
     public int XPLossFromMine ( int playerLevel )
     {
-        return playerLevel * 2;                 //At level 1 lose 2 xp, at 5 lose 10
+        return playerLevel / 2;                                                 //At level 1 lose 2 xp, at 5 lose 10
     }
 
     public int XPGainFromMine ( int playerLevel )
     {
-        return playerLevel * 3;                 //At level 1 gain 3 xp, at 5 gain 15
+        return playerLevel * 3;                                                 //At level 1 gain 3 xp, at 5 gain 15
     }
 
     public int XPGainFromPickup ( int playerLevel )
     {
-        return playerLevel * 4;                 //At level 1 gain 4 xp, at 5 gain 20
+        return playerLevel * 4;                                                 //At level 1 gain 4 xp, at 5 gain 20
     }
 
-    public void OnFire ()
+    public void OnFire()
     {
+        if(CanFire == true && FireOnCooldown == false)
+        {
+        CanFire = false;
         FireOnCooldown = true;
-        CanFire = false;                        //When fired, cannot fire for a time
+        FireCooldownRemaining = 0.75f;
+        }
     }
 
     public void DecreaseFireCooldownRemaining(float timeElapsed)
     {
-        for (float i = timeElapsed; i <= 3; ++timeElapsed, ++i)
-        {
-            FireOnCooldown = true;
-            FireCooldownRemaining = timeElapsed;
-        }
+        FireCooldownRemaining = FireCooldownRemaining - timeElapsed;
 
-        FireOnCooldown = false;
+            if (FireCooldownRemaining <= 0f)
+            {
+                CanFire = true;
+                FireOnCooldown = false;
+            }
     }
- 
-    //EnableBoost
+
     public void EnableBoost (float activeTime)
     {
-        if (BoostActive = true)
-        {
-            activeTime = 10;
-        }
-
         BoostActive = true;
+        if (BoostActive == true)
+        {
+            activeTime = 10f;
+        }
     }
 
     public void DecreaseBoostTimeRemaining (float timeElapsed)
@@ -79,53 +81,47 @@ public class GameCore
         }
         BoostActive = false;
     }
-
-/*
-        5. Enable Boost
-
-
  
-    public int AddXP(int XPChange)
+    public bool AddXP(int XPChange)
     {
-        if (XPChange => 0)
+        if (XPChange >= 0)
         {
             if (BoostActive == true)
             {
-                return XP + XPChange * 2;
+                XP = XP + (XPChange * 2);
             }
             else
             {
-                return AddXP + XPChange;
+                XP = XP + XPChange;
             }
         }
-        else if (XPChange <= 0)
+        else 
         {
-            return AddXP - XPChange;
+            XP = XP - XPChange;
+        }
+
+        if (XP < XPRequiredToNextLevel(Level))
+        {
+           Level = Level - 1;
+        }
+        else if (XP > XPRequiredToNextLevel(Level))
+        {
+            Level = Level + 1;
         }
         else
         {
-            --XPChange;
-        }
-         
-        if (XPRequiredToNextLevel <= 0)
-        {
-            ++Level;
-        }
-        else if (XPRequiredToNextLevel => XP)
-        {
-            --Level;
+            Level = Level;
         }
 
-        if (++Level || --Level)
+        if (++Level == Level || --Level == Level)
         {
             return true;
-        } 
-    }
-    
-        //III. Function returns true if level changes
-             
-    }
-    */
+        }
+        else
+        {
+            return false;
+        }
+    }        
 }
 
 
