@@ -67,19 +67,16 @@ public class GameCore
     public void EnableBoost (float activeTime)
     {
         BoostActive = true;
-        if (BoostActive == true)
-        {
-            activeTime = 10f;
-        }
+        BoostTimeRemaining = 10f;
     }
 
     public void DecreaseBoostTimeRemaining (float timeElapsed)
     {
-        for (float i = timeElapsed; i <= 10; ++timeElapsed, ++ i)
+        BoostTimeRemaining = BoostTimeRemaining - timeElapsed;
+        if (BoostTimeRemaining <= 0f)
         {
-            BoostTimeRemaining = timeElapsed;
+            BoostActive = false;
         }
-        BoostActive = false;
     }
  
     public bool AddXP(int XPChange)
