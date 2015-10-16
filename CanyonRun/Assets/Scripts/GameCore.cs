@@ -30,7 +30,7 @@ public class GameCore
 
     public int XPLossFromMine ( int playerLevel )
     {
-        return XP = XP - playerLevel + 2;                                                 //Formula for XP lost when a mine is hit
+        return XP = XP - (playerLevel + 2);                                                 //Formula for XP lost when a mine is hit
     }
 
     public int XPGainFromMine ( int playerLevel )
@@ -94,30 +94,24 @@ public class GameCore
         }
         else if (XPChange < 0)                                                   //If XP 'gain' is less than 0, player losess xp
         {
-            XP = XP - XPChange;
+            XP = XP + XPChange;
         }
 
-        if (XPRequiredToNextLevel(Level) < XPRequiredToNextLevel(Level - 1))                                   //If XP to next level is less than XP for previous level, decrease level
+        if (XP > XPRequiredToNextLevel(Level))                                   //If XP to next level is less than XP for previous level, decrease level
         {
-           Level = Level - 1;
+           Level = Level + 1;
            XP = 0;
+           return true;
         }
-        else if (XPRequiredToNextLevel(Level) <= 0)                              //If XP is above Xp required to next level, 
+        else if (XPRequiredToNextLevel(Level) < 0)                              //If XP is above Xp required to next level, 
         {
-            Level = Level + 1;
+            Level = Level - 1;
             XP = 0;
-        }
-        else
-        {
-            Level = Level;
-        }
-
-        if (++Level == Level || --Level == Level)                                                   //If level changes, return true, else false
-        {
             return true;
         }
         else
         {
+            Level = Level;
             return false;
         }
     }        
