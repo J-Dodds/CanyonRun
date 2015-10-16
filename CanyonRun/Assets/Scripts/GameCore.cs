@@ -97,21 +97,22 @@ public class GameCore
             XP = XP - XPChange;
         }
 
-        if (XP < XPRequiredToNextLevel(Level))                                   // If XP is above XP to next level, Level increases
+        if (XPRequiredToNextLevel(Level) < XPRequiredToNextLevel(Level - 1))                                   //If XP to next level is less than XP for previous level, decrease level
         {
            Level = Level - 1;
            XP = 0;
         }
-        else if (XPRequiredToNextLevel(Level) <= 0)
+        else if (XPRequiredToNextLevel(Level) <= 0)                              //If XP is above Xp required to next level, 
         {
             Level = Level + 1;
+            XP = 0;
         }
         else
         {
             Level = Level;
         }
 
-        if (++Level == Level || --Level == Level)
+        if (++Level == Level || --Level == Level)                                                   //If level changes, return true, else false
         {
             return true;
         }
