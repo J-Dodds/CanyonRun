@@ -18,34 +18,34 @@ public class GameCore
 
     public int XPRequiredToNextLevel(int playerLevel)                                  //XP to next level                  
     {
-        if (playerLevel % 2 ==0)
+        if (playerLevel % 2 == 0)
         {
-            return playerLevel * 11;                                            //Even levels
+            return playerLevel * 21;                                            //Even levels
         }
         else
         {
-            return playerLevel * 10;                                            //Odd levels
+            return playerLevel * 20;                                            //Odd levels
         }
     }
 
     public int XPLossFromMine ( int playerLevel )
     {
-        return playerLevel / 2;                                                 //At level 1 lose 2 xp, at 5 lose 10
+        return XP = XP - playerLevel + 2;                                                 //Formula for XP lost when a mine is hit
     }
 
     public int XPGainFromMine ( int playerLevel )
     {
-        return playerLevel * 3;                                                 //At level 1 gain 3 xp, at 5 gain 15
+        return playerLevel + 3;                                                 //Formula for XP gain when a mine is shot
     }
 
     public int XPGainFromPickup ( int playerLevel )
     {
-        return playerLevel * 4;                                                 //At level 1 gain 4 xp, at 5 gain 20
+        return playerLevel + 4;                                                 //Formulae for XP from collecting blue orbs
     }
 
     public void OnFire()
     {
-        if(CanFire == true && FireOnCooldown == false)
+        if(CanFire == true && FireOnCooldown == false)                          //When called, if player can fire and there is no cooldown, fire and set CanFire to false and start cooldwon
         {
         CanFire = false;
         FireOnCooldown = true;
@@ -55,7 +55,7 @@ public class GameCore
 
     public void DecreaseFireCooldownRemaining(float timeElapsed)
     {
-        FireCooldownRemaining = FireCooldownRemaining - timeElapsed;
+        FireCooldownRemaining = FireCooldownRemaining - timeElapsed;            //When called, reduce FireCooldownRemaining by timeElapsed, and if FireCooldownRemaining is equal to or lower than 0, set CanFire to true and turn off cooldown
 
             if (FireCooldownRemaining <= 0f)
             {
@@ -66,13 +66,13 @@ public class GameCore
 
     public void EnableBoost (float activeTime)
     {
-        BoostActive = true;
+        BoostActive = true;                                                     //If player hits boost item, sets boost to on for 10 seconds
         BoostTimeRemaining = 10f;
     }
 
     public void DecreaseBoostTimeRemaining (float timeElapsed)
     {
-        BoostTimeRemaining = BoostTimeRemaining - timeElapsed;
+        BoostTimeRemaining = BoostTimeRemaining - timeElapsed;                   //When called, decrease BoostTimeRemaining by timeElapsed, and if BoostTimeRemaining is equal to or less than 0, deactivates boost
         if (BoostTimeRemaining <= 0f)
         {
             BoostActive = false;
@@ -81,7 +81,7 @@ public class GameCore
  
     public bool AddXP(int XPChange)
     {
-        if (XPChange >= 0)
+        if (XPChange >= 0)                                                       //If XP gain is greater than 0, checks to see if Boost is active, and if it is, gives double xp, else it just gives normal xp.
         {
             if (BoostActive == true)
             {
@@ -92,16 +92,17 @@ public class GameCore
                 XP = XP + XPChange;
             }
         }
-        else 
+        else if (XPChange < 0)                                                   //If XP 'gain' is less than 0, player losess xp
         {
             XP = XP - XPChange;
         }
 
-        if (XP < XPRequiredToNextLevel(Level))
+        if (XP < XPRequiredToNextLevel(Level))                                   // If XP is above XP to next level, Level increases
         {
            Level = Level - 1;
+           XP = 0;
         }
-        else if (XP > XPRequiredToNextLevel(Level))
+        else if (XPRequiredToNextLevel(Level) <= 0)
         {
             Level = Level + 1;
         }
